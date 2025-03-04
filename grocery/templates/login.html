@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include 'navigation.html' %}
+
+    <title>Login | TexTrade-Solapur</title>
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
+    <style>
+        body {
+            background: #004E64;
+            font-family: 'Poppins', sans-serif;
+        }
+        .login-container {
+            margin-top: 10%;
+            margin-bottom: 5%;
+        }
+        .login-box {
+            max-width: 450px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .login-box .form-control {
+            height: 45px;
+            font-size: 16px;
+        }
+        .login-box h2 {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .btn-login {
+            width: 100%;
+            background: #004E64;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .btn-login:hover {
+            background: #00334e;
+        }
+        .forgot {
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            color: #004E64;
+        }
+        .alert {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+
+    {% if error == "yes" %}
+    <div class="alert alert-success text-center">Logged in successfully! Redirecting...</div>
+    <script>
+        setTimeout(function() {
+            window.location.href = '{% url "home" %}';  // Redirect to home page
+        }, 2000);
+    </script>
+    {% elif error == "not" %}
+    <div class="alert alert-danger text-center">Invalid username or password!</div>
+    {% elif error == "not_allowed" %}
+    <div class="alert alert-warning text-center">Only users can log in here!</div>
+    {% endif %}
+</head>
+<body>
+
+
+
+<div class="container login-container">
+    <div class="login-box">
+        <h2>User Login</h2>
+
+        <!-- Success/Error Messages -->
+        {% if error == "yes" %}
+        {% comment %} <div class="alert alert-success">Logged in successfully!</div> {% endcomment %}
+        {% elif error == "not" %}
+        <div class="alert alert-danger">Invalid username or password!</div>
+        {% elif error == "not_allowed" %}
+        <div class="alert alert-warning">Only users can log in here!</div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-login">Login</button>
+        </form>
+
+        <a href="{% url 'signup' %}" class="forgot">Don't have an account? Sign Up</a>
+    </div>
+</div>
+
+</body>
+</html>

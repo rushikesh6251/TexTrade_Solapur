@@ -1,0 +1,54 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+    .about-container {
+        margin-top: 100px;
+        text-align: center;
+    }
+    .about-heading {
+        font-family: 'Monotype Corsiva', cursive;
+        color: #E6120E;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .about-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+    .about-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+    .about-img:hover {
+        transform: scale(1.05);
+    }
+    .about-text {
+        max-width: 600px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: justify;
+    }
+</style>
+
+<div class="container about-container">
+    <h2 class="about-heading">About Us</h2>
+    <div class="about-content">
+        <img src="{% static 'images/abt.jpg' %}" alt="About Us" class="about-img" width="350" height="250">
+        <p class="about-text">
+            Welcome to <strong>TexTrade Solapur</strong>, your gateway to the thriving textile market of Solapur, brought online for businesses and customers worldwide. Our platform is designed to bridge the gap between tradition and innovation, empowering textile businesses with digital tools to expand their reach and streamline operations. Whether you're a business owner managing inventory and orders or a customer exploring premium textile products, TexTrade delivers a seamless and personalized experience.<br><br>
+            At TexTrade, we take pride in revolutionizing the way textiles are traded, ensuring accessibility, efficiency, and global connectivity for every stakeholder in the industry. Join us as we weave the future of textiles together!
+        </p>
+    </div>
+</div>
+
+{% endblock %}

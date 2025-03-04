@@ -1,0 +1,18 @@
+{% extends 'navigation.html' %}
+
+{% block body %}
+<div class="container text-center">
+    <h2 style="color: green;">Booking Confirmed!</h2>
+    <p>Thank you for your order. Your booking has been successfully processed.</p>
+    
+    <h4>Booking Details:</h4>
+    <ul>
+        <li><strong>Booking ID:</strong> {{ booking_id }}</li>
+        <li><strong>Total Amount:</strong> ₹{{ total_amount }}</li>
+        <li><strong>Payment ID:</strong> {{ payment_id }}</li>
+        <li><strong>Order Status:</strong> Confirmed</li>
+    </ul>
+    
+    <a href="/" class="btn btn-primary">Return to Home</a>
+</div>
+{% endblock %}

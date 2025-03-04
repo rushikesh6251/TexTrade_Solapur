@@ -1,0 +1,97 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %}
+
+<div class="container">
+    <h2 style="margin-top:20px" align="center">Registration Form</h2>
+    <hr>
+
+    <!-- ✅ ERROR MESSAGES -->
+    {% if error == "user_exists" %}
+    <div class="alert alert-danger text-center" role="alert">
+        Username is already taken. Please choose another one.
+    </div>
+    {% elif error == "email_exists" %}
+    <div class="alert alert-danger text-center" role="alert">
+        Email is already in use. Please use a different email.
+    </div>
+    {% elif error == "db_error" %}
+    <div class="alert alert-danger text-center" role="alert">
+        An unexpected error occurred. Please try again later.
+    </div>
+    {% elif error == "yes" %}
+    <div class="alert alert-success text-center" role="alert">
+        Registered successfully! Redirecting to login...
+    </div>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{% url 'login' %}";
+        }, 2000);
+    </script>
+    {% endif %}
+
+    <div class="container-fluid" style="width:70%; margin-top:10%">
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fname">First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name" name="fname" id="fname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lname">Last Name</label>
+                    <input type="text" class="form-control" name="lname" placeholder="Enter Last Name" id="lname" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="uname">User Name</label>
+                    <input type="text" class="form-control" name="uname" placeholder="Enter User Name" id="uname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="pwd">Password</label>
+                    <input type="password" class="form-control" name="pwd" id="pwd" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact">Contact</label>
+                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter Contact Detail" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" name="city" placeholder="Enter City" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="date">Date of Birth</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="add">Full Address</label>
+                    <input type="text" class="form-control" id="add" name="add" placeholder="Enter Address Detail" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="img">Image</label>
+                    <input type="file" class="form-control" id="img" name="img" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

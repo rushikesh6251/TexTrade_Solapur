@@ -1,0 +1,111 @@
+{% extends 'navigation.html' %}
+{% load static %}
+{% block body %}
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    }
+
+    .contact-container {
+        margin-top: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .contact-heading {
+        font-size: 40px;
+        font-weight: bold;
+        color: #333;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .contact-box {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-icon {
+        font-size: 50px;
+        color: #E6120E;
+        margin-bottom: 10px;
+        transition: 0.3s;
+    }
+
+    .contact-box:hover .contact-icon {
+        color: #C30000;
+    }
+
+    .contact-text {
+        font-weight: bold;
+        font-size: 18px;
+        color: #222;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+</style>
+
+<div class="contact-container">
+    <h2 class="contact-heading">Contact Us</h2>
+
+    <div class="contact-grid">
+        <div class="contact-box">
+            <i class="fas fa-phone contact-icon"></i>
+            <h4>Contact</h4>
+            <p class="contact-text">+91 8602768216</p>
+        </div>
+
+        <a href="mailto:myemail@gmail.com">
+            <div class="contact-box">
+                <i class="fas fa-envelope contact-icon"></i>
+                <h4>Email</h4>
+                <p class="contact-text">myemail@gmail.com</p>
+            </div>
+        </a>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=M.P.+Nagar" target="_blank">
+            <div class="contact-box">
+                <i class="fas fa-map-marker-alt contact-icon"></i>
+                <h4>Address</h4>
+                <p class="contact-text">M.P. Nagar</p>
+            </div>
+        </a>
+
+        <div class="contact-box">
+            <i class="far fa-clock contact-icon"></i>
+            <h4>Office Hours</h4>
+            <p class="contact-text">10:00 AM - 7:00 PM</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
