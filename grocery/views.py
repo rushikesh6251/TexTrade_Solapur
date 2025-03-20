@@ -537,8 +537,6 @@ def Booking_order(request, pid):
         # ✅ Add products to the booking
         for cart_item in cart:
             new_booking.products.add(cart_item.product)
-
-        # ✅ Clear cart after booking
         cart.delete()
 
         return redirect('payment', new_booking.total)

@@ -16,7 +16,7 @@
     <th>Status</th>
     <th>View Product</th>
     <th>Cancel Booking</th>
-    <th>Review</th> <!-- Added Review Column -->
+
   </tr>
   </thead>
    <tbody>
@@ -31,23 +31,11 @@
       <td>{{ i.total }}</td>
       <td>{{ i.status.name }}</td>
       <a href="{% url 'booking_detail' i.booking_id i.id %}">
-        <button class="button button1">Detail</button>
     </a>
     
       <td><a href="{% url 'booking_detail' i.booking_id i.id %}"><button class="button button1">detail</button></a></td>
       <td><a href="{% url 'delete_booking' i.booking_id i.id %}" onclick="return confirm('Are you sure?')">
           <button class="button button1" id="#delete">cancel</button></a></td>
-      
-      <!-- Show "Review" button only for completed bookings and if no review exists -->
-      <td>
-          {% if i.status.name == "Completed" and not i.reviews.exists %}
-              <a href="{% url 'add_review' i.id %}">
-                  <button class="button button1">Review</button>
-              </a>
-          {% else %}
-              <span style="color: gray;">Reviewed</span>
-          {% endif %}
-      </td>
   </tr>
    {% endfor %}
 
