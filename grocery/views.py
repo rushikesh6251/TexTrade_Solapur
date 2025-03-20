@@ -477,37 +477,39 @@ def remove_cart(request,pid):
     return redirect('cart')
 
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import date
-from .models import User, Profile, Cart, Booking, Status, Product
+from .models import Booking, BookingItem, Profile, Cart, Product, Status
+import uuid
+
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Booking, BookingItem, Profile, Cart, Product, Status
+from grocery.models import Booking, Cart, Profile, User, Status
 from datetime import date
 import uuid
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from .models import Profile, Cart, Booking, Status
 from datetime import date
-from .models import User, Profile, Cart, Booking, Status, Product
+import uuid
 
 def Booking_order(request, pid):
     print(f"Received pid: {pid}")  # ✅ Debugging line
-
     if not request.user.is_authenticated:
         return redirect('login')
 
     # Fetch user and profile
     data1 = get_object_or_404(User, id=request.user.id)
     data = Profile.objects.filter(user=data1).first()
-    
+
     # Check if cart is empty
     cart = Cart.objects.filter(profile=data).all()
     if not cart.exists():
         return HttpResponse("Error: Your cart is empty!", status=400)  # 🛑 Prevent empty booking
-    
+
     # Calculate total price
     total = sum(i.product.price for i in cart)
     num1 = cart.count()
-    
     date1 = date.today()
 
     if request.method == "POST":
@@ -518,11 +520,11 @@ def Booking_order(request, pid):
         e = request.POST['email']
         con = request.POST['contact']
         t = request.POST['total']
-        
+
         user = get_object_or_404(User, username=c)
         profile = get_object_or_404(Profile, user=user)
         status = get_object_or_404(Status, name="pending")
-        
+
         # ✅ Generate a unique booking ID
         new_booking = Booking.objects.create(
             profile=profile,
@@ -549,8 +551,10 @@ def Booking_order(request, pid):
         'total': total,
         'num1': num1
     }
-    
+
     return render(request, 'booking.html', context)
+
+
 
 def payment(request,total):
     if not request.user.is_authenticated:
@@ -934,26 +938,23 @@ from django.shortcuts import render
 from django.conf import settings
 
 
+import razorpay
+from django.conf import settings
+from django.shortcuts import render, redirect
+from grocery.models import Booking
+
 def payment(request, total=None):
     if total is None:
         return render(request, "error.html", {"error": "Invalid total amount."})
 
     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
-    profile = request.user.profile  # Ensure Profile model has OneToOne with User
-
-    # ✅ Generate a unique booking_id using UUID
-    unique_booking_id = str(uuid.uuid4())[:8]  # Generates an 8-character unique ID
-
-    # ✅ Create a new booking with the generated booking_id
-    booking = Booking.objects.create(
-        profile=profile,
-        total=total,
-        quantity=1,  # Set dynamically if needed
-        book_date="2025-02-21",  # Set actual date dynamically
-        status=None,  # Set default status
-        booking_id=unique_booking_id  # ✅ Store the unique booking_id
-    )
+    # ✅ Fetch the latest booking for this user
+    profile = request.user.profile
+    latest_booking = Booking.objects.filter(profile=profile).order_by('-book_date').first()
+    
+    if not latest_booking:
+        return render(request, "error.html", {"error": "No booking found."})
 
     data = {
         "amount": int(total) * 100,  # Razorpay requires amount in paise
@@ -970,7 +971,7 @@ def payment(request, total=None):
         "amount": total,
         "order_id": order["id"],
         "razorpay_key": settings.RAZORPAY_KEY_ID,
-        "booking_id": booking.booking_id  # ✅ Pass generated booking_id to the template
+         "booking_id": latest_booking.booking_id  # ✅ Pass existing booking_id
     })
 
 
