@@ -1,33 +1,16 @@
-{% extends 'navigation.html' %}
+<form method="POST">
+    {% csrf_token %}
+    <label for="rating">Rating:</label>
+    <select name="rating" required>
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+    </select>
 
-{% block body %}
-<div class="container mt-5">
-    <h2 class="text-center">Review for {{ product.name }}</h2>
-    <hr>
+    <label for="comment">Comment:</label>
+    <textarea name="comment" required></textarea>
 
-    <div class="card p-4 shadow-sm">
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="rating"><strong>Rating (1-5)</strong></label>
-                <select name="rating" id="rating" class="form-control" required>
-                    <option value="">Select Rating</option>
-                    <option value="1">⭐☆☆☆☆ (1)</option>
-                    <option value="2">⭐⭐☆☆☆ (2)</option>
-                    <option value="3">⭐⭐⭐☆☆ (3)</option>
-                    <option value="4">⭐⭐⭐⭐☆ (4)</option>
-                    <option value="5">⭐⭐⭐⭐⭐ (5)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="comment"><strong>Your Review</strong></label>
-                <textarea name="comment" id="comment" rows="4" class="form-control" placeholder="Write your review here..." required></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-success mt-3">Submit Review</button>
-            <a href="{% url 'booking_history' %}" class="btn btn-secondary mt-3">Cancel</a>
-        </form>
-    </div>
-</div>
-{% endblock %}
+    <button type="submit">Submit Review</button>
+</form>

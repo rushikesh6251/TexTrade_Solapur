@@ -260,46 +260,40 @@ def View_feedback(request):
     d = {'feed': feed}
     return render(request, 'view_feedback.html', d)
 
-
-
-def View_prodcut(request,pid):
+def View_product(request, pid):
     if not request.user.is_authenticated:
         return redirect('login_admin')
-    cat = ""
-    cat1 = ""
-    pro1 = ""
+
+    user = profile = cart = pro1 = cat1 = None
     num1 = 0
-    user=""
-    profile=""
-    cart=""
-    pro=""
-    num=""
+
+    # If user is not staff, get user cart
     if not request.user.is_staff:
         user = User.objects.get(id=request.user.id)
         profile = Profile.objects.get(user=user)
         cart = Cart.objects.filter(profile=profile)
-        for i in cart:
-            num1 += 1
+        num1 = cart.count()  # Count cart items
 
+    # Fetch products based on category
     if pid == 0:
         cat = "All Product"
         pro1 = Product.objects.all()
     else:
         cat1 = Category.objects.get(id=pid)
-        pro1 = Product.objects.filter(category=cat1).all()
-    cat = Category.objects.all()
-    pro = Product.objects.all()
-    num = []
-    b = 1
-    for j in cat:
-        a = 1
-        for i in pro:
-            if j.name == i.category.name:
-                if a == 1:
-                    num.append(i.id)
-                    a = 2
-    d = {'pro': pro, 'cat': cat,'cat1': cat1,'num':num,'pro1':pro1,'num1':num1}
-    return render(request, 'view_product.html',d)
+        pro1 = Product.objects.filter(category=cat1)
+
+    # Get all categories
+    categories = Category.objects.all()
+
+    context = {
+        'pro1': pro1,
+        'cat': categories,
+        'cat1': cat1,
+        'num1': num1
+    }
+    return render(request, 'view_product.html', context)
+
+
 
 
 def Add_Categary(request):
@@ -604,6 +598,12 @@ from django.shortcuts import render, get_object_or_404
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Booking
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Profile, Booking
+
+@login_required
 
 def booking_detail(request, pid, bid):
     if not request.user.is_authenticated:
@@ -917,25 +917,6 @@ def edit_category(request,pid):
     return render(request, 'edit_category.html', d)
 
 # payment 
-
-import razorpay
-from django.conf import settings
-from django.shortcuts import render
-
-import razorpay
-from django.conf import settings
-from django.shortcuts import render
-
-import razorpay
-from django.shortcuts import render, redirect
-from django.conf import settings
-from .models import Booking, Payment
-
-import razorpay
-from django.shortcuts import render
-from django.conf import settings
-
-
 import razorpay
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -1090,22 +1071,55 @@ def booking_history(request):
     bookings = Booking.objects.filter(profile=request.user.profile, status__status="Completed")  # Show completed bookings
     return render(request, 'booking_history.html', {'bookings': bookings})
 
-@login_required
-def add_review(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, profile=request.user.profile)
-    product = booking.status.product  # Assuming status links to a product
+
+# reviews 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Booking, Product, Review
+
+def add_review(request, booking_id, product_id):
+    booking = Booking.objects.get(booking_id=booking_id)  # Get Booking
+    product = Product.objects.get(id=product_id)  # Get Product
+
+    if request.method == "POST":
+        comment = request.POST.get("comment")  # Match "comment" field
+        rating = request.POST.get("rating")
+
+        # ✅ Ensure Review object is created with correct field names
+        review = Review.objects.create(
+            product=product,
+            user=request.user,  # Assuming user is logged in
+            comment=comment,  # Use "comment" instead of "review_text"
+            rating=int(rating)  # Convert rating to integer
+        )
+        review.save()
+
+        return redirect("view_booking")  # Redirect after review submission
+
+    return render(request, "add_review.html", {"booking": booking, "product": product})
+
+
+# product details
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product, Review
+from .forms import ReviewForm
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    reviews = Review.objects.filter(product=product)
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.profile = request.user.profile
-            review.product = product  # Ensure review is for the booked product
-            review.booking = booking
+            review.product = product
+            review.user = request.user
             review.save()
-            return redirect('booking_history')  # Redirect to history page
-
+            return redirect('product_detail', product_id=product.id)
     else:
         form = ReviewForm()
 
-    return render(request, 'add_review.html', {'form': form, 'product': product})
+    return render(request, "product_detail.html", {
+        "product": product,
+        "reviews": reviews,
+        "form": form
+    })

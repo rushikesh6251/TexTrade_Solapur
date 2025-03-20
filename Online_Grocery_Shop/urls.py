@@ -36,7 +36,7 @@ urlpatterns = [
     path('add_product',Add_Product,name="add_product"),
     path('view_feedback', View_feedback, name='view_feedback'),
     path('view_orders', view_orders, name='view_orders'),
-    path('view_product(?P<int:pid>)', View_prodcut, name='view_product'),
+    path('view_product(?P<int:pid>)', View_product, name='view_product'),
     path('admin_view_product', Admin_View_product, name='admin_view_product'),
     path('vendor_view_product', vendor_view_product, name='vendor_view_product'),
     path('login_admin',Admin_Login,name="login_admin"),
@@ -53,12 +53,12 @@ urlpatterns = [
     path('booking/<str:pid>/', Booking_order, name="booking_order"),
 
     path('process_booking/', process_booking, name="process_booking"), 
-
+    path('review/<int:product_id>/', add_review, name='add_review'),
     path("payment/<int:total>/", payment, name="payment"),
     path('pay/', views.create_order, name='create_order'),
     path('payment-success/', views.payment_success, name='payment_success'),
     path("booking-confirmation/", booking_confirmation, name="booking_confirmation"),
-    
+    path("product/<int:product_id>/review/", add_review, name="add_review"),
     path('delete_booking/(?P<str:pid>)/(?P<bid>[0-9]+)', delete_booking, name='delete_booking'),
     path('delete_admin_booking/(?P<str:pid>)/(?P<bid>[0-9]+)', delete_admin_booking, name='delete_admin_booking'),
     path('booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)', booking_detail, name='booking_detail'),
@@ -66,8 +66,8 @@ urlpatterns = [
     path('vendor_view_booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)/(?P<uid>[0-9]+)', vendor_view_booking_detail, name='vendor_view_booking_detail'),
 
     path('signupvender', signupvender, name="signupvendor"),
-
-    path('add_review/<int:pid>/<int:bid>/', add_review, name='add_review'),
+    path('product/<int:product_id>/', product_detail, name='product_detail'),
+    # path('add_review/<int:pid>/<int:bid>/', add_review, name='add_review'),
 
     path('Edit_status/(?P<str:pid>)/(?P<bid>[0-9]+)', Edit_status, name='Edit_status'),
     path('remove_cart(?P<int:pid>)', remove_cart, name='remove_cart'),
@@ -88,5 +88,10 @@ urlpatterns = [
     path('vendor_home',vendor_home,name="vendor_home"),
     path('view_orders',view_orders,name="view_orders"),     
     path('view_orders_vendor',view_orders_vendor,name="view_orders_vendor"),     
+
+    path('product/<str:booking_id>/<int:product_id>/review/', views.add_review, name='add_review'),
+
+
+
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

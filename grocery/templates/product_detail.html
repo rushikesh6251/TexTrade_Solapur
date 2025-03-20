@@ -1,0 +1,46 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+      <h2>{{ product.name }}</h2>
+      <h4 style="color: green;">Rs. {{ product.price }}</h4>
+      <p>{{ product.desc }}</p>
+
+      <h5 class="mt-4">Category: <span class="text-muted">{{ product.category.name }}</span></h5>
+
+      <!-- Add to Cart Button -->
+      <form action="{% url 'add_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Add to Cart</button>
+      </form>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Displaying Existing Reviews -->
+  <h3 class="mt-4">Customer Reviews</h3>
+  {% if reviews %}
+    <ul class="list-group">
+      {% for review in reviews %}
+        <li class="list-group-item">
+          <strong>{{ review.user.username }}</strong>  
+          <span class="text-muted"> (Rated: {{ review.rating }}/5)</span>
+          <p>{{ review.comment }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No reviews yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
