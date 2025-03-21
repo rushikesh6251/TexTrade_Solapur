@@ -197,9 +197,13 @@ def vendor_home(request):
 def View_user(request):
     if not request.user.is_authenticated:
         return redirect('login_admin')
-    pro = Profile.objects.all()
-    d = {'user':pro}
-    return render(request,'view_user.html',d)
+
+    # Fetch all user profiles
+    profiles = Profile.objects.all()
+    
+    # Pass the correct variable name to the template
+    return render(request, 'view_user.html', {'users': profiles})
+
 
 def view_vendors(request):
     if not request.user.is_authenticated:
