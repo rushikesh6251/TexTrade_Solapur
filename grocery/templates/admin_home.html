@@ -1,73 +1,105 @@
-{% extends 'navigation.html' %}
+{% extends 'navigation.html' %} 
 {% load static %}
 {% block body %}
 
 <style>
+/* Glowing effect */
 .glow {
-  font-size: 80px;
+  font-size: 60px;
+  font-weight: bold;
   color: #fff;
   text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1.5s ease-in-out infinite alternate;
 }
 
-@-webkit-keyframes glow {
+@keyframes glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff416c, 0 0 30px #ff416c;
   }
-  
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4b2b, 0 0 40px #ff4b2b;
   }
+}
+
+/* Modern card design */
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon styling */
+.stat-icon {
+  font-size: 50px;
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
 /* Rounded border */
 hr.rounded {
-  border-top: 8px solid lightblue;
+  border-top: 4px solid lightblue;
   border-radius: 5px;
+  width: 80%;
+  margin: auto;
 }
 
-.prjdiv:hover{
-box-shadow:0 0 20px 0 rgba(0,0,0,0.3);
-transform:translateY(-20px)
+/* Container alignment */
+.container {
+  margin-top: 5%;
+  max-width: 900px;
 }
 
 </style>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-<br>
-<center>
-<div class="container" style="margin-top:10%;height:150px;width:80%">
-    <div class="row" style="height:90%">
-        <div class="col-md-4 prjdiv">
-            <a href="{% url 'view_user' %}"><h1>Total Customer</h1>
-            <h2 style="color:blue">{{total_customer}}</h2>
-			<hr class="rounded"></a>
+<!-- External Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="container">
+    <h1 class="glow">Admin Dashboard</h1>
+    <hr class="rounded">
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <a href="{% url 'view_user' %}" class="text-decoration-none">
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <h2>Total Customers</h2>
+                    <h3 style="color:blue">{{ total_customer }}</h3>
+                    <hr class="rounded">
+                </div>
+            </a>
         </div>
 
-        <div class="col-md-4 prjdiv">
-           <a href="{% url 'admin_viewBooking' %}"><h1>Total Booking</h1>
-            <h2 style="color:blue">{{total_book}}</h2>
-			<hr class="rounded"></a>
+        <div class="col-md-4">
+            <a href="{% url 'admin_viewBooking' %}" class="text-decoration-none">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check stat-icon"></i>
+                    <h2>Total Bookings</h2>
+                    <h3 style="color:blue">{{ total_book }}</h3>
+                    <hr class="rounded">
+                </div>
+            </a>
         </div>
 
-        <div class="col-md-4 prjdiv">
-		<a href="{% url 'admin_view_product' %}">
-            <h1>Total Product</h1>
-            <h2 style="color:blue">{{total_pro}}</h2>
-			<hr class="rounded"></a>
+        <div class="col-md-4">
+            <a href="{% url 'admin_view_product' %}" class="text-decoration-none">
+                <div class="stat-card">
+                    <i class="fas fa-box-open stat-icon"></i>
+                    <h2>Total Products</h2>
+                    <h3 style="color:blue">{{ total_pro }}</h3>
+                    <hr class="rounded">
+                </div>
+            </a>
         </div>
     </div>
 </div>
-    </center>
 
-	
-	
-	
-	
-	
-	
-	
-	
 {% endblock %}

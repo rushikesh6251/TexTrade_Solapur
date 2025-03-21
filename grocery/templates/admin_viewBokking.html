@@ -1,49 +1,121 @@
 {% extends 'navigation.html' %}
 {% block body %}
+{% load static %}
 
-<center><h2 style="color:red;margin-top:2%">View Booking</h2></center><hr>
-<div class="container" style="margin-top:5%">
-</div>
- <div class="container">
-<table class="table table-bordered" id="myTable">
-  <thead>
-  <tr>
-    <th>Sr. No</th>
-    <th>Booking ID</th>
-    <th>Booking Date</th>
-    <th>Customer name</th>
-    <th>Email Id</th>
-      <th>Quantity</th>
-      <th>Total</th>
-      <th>Status</th>
-    <th>View Product</th>
-    <th>Cancel Booking</th>
-  </tr>
-  </thead>
-   <tbody>
+<style>
+  /* Table Styling */
+  .table-container {
+    margin: 4% auto;
+    max-width: 95%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
 
-{% for i in book %}
+  .table {
+    width: 100%;
+    text-align: center;
+  }
 
-  <tr>
-      <td>{{forloop.counter}}</td>
-    <td>{{i.booking_id}}</td>
-    <td>{{i.book_date}}</td>
-    <td>{{i.profile.user.username}}</td>
-    <td>{{i.profile.user.email}}</td>
-      <td>{{i.quantity}}</td>
-      <td>{{i.total}}</td>
-    <td><a href="{% url 'Edit_status' i.booking_id i.id %}"><button class="button button1">{{i.status.name}}</button></a></td>
-      <td><a href="{% url 'admin_booking_detail' i.booking_id i.id i.profile.user.id  %}"><button class="button button1">detail</button></a></td>
-      <td><a href="{% url 'delete_admin_booking' i.booking_id i.id %}" onclick="return confirm('Are you sure?')"><button class="button button1" id="#delete">cancel</button></a></td>
-  </tr>
-   {% endfor %}
+  .table thead {
+    background: #007bff;
+    color: white;
+  }
+
+  .table th, .table td {
+    padding: 12px;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+  }
+
+  .table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  /* Status Button Styling */
+  .btn-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .status-pending { background: #ffc107; color: black; }
+  .status-completed { background: #28a745; color: white; }
+  .status-cancelled { background: #dc3545; color: white; }
+
+  /* Button Styling */
+  .btn-action {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    transition: 0.3s;
+  }
+
+  .btn-view { background: #17a2b8; }
+  .btn-cancel { background: #dc3545; }
+
+  .btn-action:hover { opacity: 0.8; }
+
+</style>
+
+<!-- Page Heading -->
+<div class="container table-container">
+  <center><h2 class="text-danger">View Bookings</h2></center>
+  <hr>
+
+  <table class="table table-bordered" id="myTable">
+    <thead>
+      <tr>
+        <th>Sr. No</th>
+        <th>Booking ID</th>
+        <th>Booking Date</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Quantity</th>
+        <th>Total (₹)</th>
+        <th>Status</th>
+        <th>View Product</th>
+        <th>Cancel Booking</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in book %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.booking_id }}</td>
+        <td>{{ i.book_date }}</td>
+        <td>{{ i.profile.user.username }}</td>
+        <td>{{ i.profile.user.email }}</td>
+        <td>{{ i.quantity }}</td>
+        <td>₹ {{ i.total }}</td>
+        <td>
+          <a href="{% url 'Edit_status' i.booking_id i.id %}">
+            <button class="btn-status 
+              {% if i.status.name == 'Pending' %} status-pending
+              {% elif i.status.name == 'Completed' %} status-completed
+              {% else %} status-cancelled {% endif %}">
+              {{ i.status.name }}
+            </button>
+          </a>
+        </td>
+        <td>
+          <a href="{% url 'admin_booking_detail' i.booking_id i.id i.profile.user.id %}">
+            <button class="btn-action btn-view">Detail</button>
+          </a>
+        </td>
+        <td>
+          <a href="{% url 'delete_admin_booking' i.booking_id i.id %}" 
+             onclick="return confirm('Are you sure you want to cancel this booking?')">
+            <button class="btn-action btn-cancel">Cancel</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
- </div>
-<script>
-            var el_up = document.getElementById("GFG_UP");
+  </table>
+</div>
 
-            el_up.innerHTML =
-                "Click on the LINK for further confirmation.";
-        </script>
 {% endblock %}

@@ -3,32 +3,37 @@
 {% load static %}
 
 <div class="container">
-    <h2 style="margin-top:20px" align="center">Edit Category</h2><hr>
+    <h2 class="text-center mt-4 text-uppercase font-weight-bold">Edit Category</h2>
+    <hr>
 
-    <div class="container-fluid" style="width:70%; margin-top:10%">
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="exampleInputEmail1">Category Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" name="cat" value="{{ category.name }}" required>
-            </div>
+    <div class="container-fluid d-flex justify-content-center">
+        <div class="card p-4 shadow-sm" style="width: 50%; border-radius: 10px;">
+            <form method="post" action="">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="categoryInput"><strong>Category Name</strong></label>
+                    <input type="text" class="form-control" id="categoryInput" name="cat" value="{{ category.name }}" required>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary px-4">Update Category</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-{% if error == "no" %}
+<!-- JavaScript Alerts for Better User Feedback -->
 <script>
-    alert('Product category has been updated.');
-    window.location.href = '{% url "edit_category" category.id %}';
-</script>
-{% endif %}
+    {% if error == "no" %}
+        alert('✅ Category has been updated successfully!');
+        window.location.href = '{% url "edit_category" category.id %}';
+    {% endif %}
 
-{% if error == "yes" %}
-<script>
-    alert('Something went wrong, Try Again...');
+    {% if error == "yes" %}
+        alert('❌ Something went wrong. Please try again.');
+    {% endif %}
 </script>
-{% endif %}
 
 {% endblock %}

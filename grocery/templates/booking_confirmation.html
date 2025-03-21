@@ -1,18 +1,34 @@
 {% extends 'navigation.html' %}
 
 {% block body %}
-<div class="container text-center">
-    <h2 style="color: green;">Booking Confirmed!</h2>
-    <p>Thank you for your order. Your booking has been successfully processed.</p>
-    
-    <h4>Booking Details:</h4>
-    <ul>
-        <li><strong>Booking ID:</strong> {{ booking_id }}</li>
-        <li><strong>Total Amount:</strong> ₹{{ total_amount }}</li>
-        <li><strong>Payment ID:</strong> {{ payment_id }}</li>
-        <li><strong>Order Status:</strong> Confirmed</li>
-    </ul>
-    
-    <a href="/" class="btn btn-primary">Return to Home</a>
+<div class="container text-center mt-5">
+    <!-- Success Message -->
+    <div class="alert alert-success" role="alert">
+        <h2 class="text-success"><i class="fa fa-check-circle"></i> Booking Confirmed!</h2>
+        <p class="lead">Thank you for your order. Your booking has been successfully processed.</p>
+    </div>
+
+    <!-- Booking Details -->
+    <div class="card mx-auto shadow-sm" style="max-width: 500px;">
+        <div class="card-body">
+            <h4 class="card-title text-center text-primary">Booking Details</h4>
+            <ul class="list-group list-group-flush text-left">
+                <li class="list-group-item"><strong>Booking ID:</strong> {{ booking_id }}</li>
+                <li class="list-group-item"><strong>Total Amount:</strong> ₹{{ total_amount }}</li>
+                <li class="list-group-item"><strong>Payment ID:</strong> {{ payment_id }}</li>
+                <li class="list-group-item"><strong>Order Status:</strong> <span class="badge badge-success">Confirmed</span></li>
+                <li class="list-group-item"><strong>Booking Date:</strong> {{ booking_date }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Return to Home Button -->
+    <div class="mt-4">
+        <a href="/" class="btn btn-lg btn-primary"><i class="fa fa-home"></i> Return to Home</a>
+    </div>
 </div>
+
+<!-- Optional: FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 {% endblock %}

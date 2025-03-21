@@ -8,21 +8,46 @@
 </script>
 {% endif %}
 
-
-<div class="container">
-    <h2 style="margin-top:20px" align="center">Add Category</h2><hr>
-
-<div class="container-fluid" style="width:70%;margin-top:10%">
-<form method="post" action="">
-    {% csrf_token %}
-  <div class="form-group">
-    <label for="exampleInputEmail1">Category Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cat" placeholder="Enter Category">
-  </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Add New Category</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="categoryName" class="font-weight-bold">Category Name</label>
+                            <input type="text" class="form-control" id="categoryName" name="cat" placeholder="Enter Category" required>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block mt-3">Add Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
+<style>
+    .card {
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
 
 {% endblock %}

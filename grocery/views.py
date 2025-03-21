@@ -10,9 +10,6 @@ from django.http import JsonResponse
 import uuid
 from django.db import transaction
 
-
-
-
 # Create your views here.
 
 def Home(request):
@@ -62,6 +59,21 @@ def Contact(request):
 #user signup
 
 
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from .models import Profile
+from django.db import IntegrityError
+import datetime
+
+from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
+from datetime import datetime
+from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
+from datetime import datetime
+
+from django.db import IntegrityError
+
 def Signup(request):
     error = ""
     if request.method == "POST":
@@ -92,7 +104,6 @@ def Signup(request):
             error = "db_error"
 
     return render(request, "signup.html", {'error': error})
-
 
 def Login(request):
     error = None  # Default state
@@ -197,9 +208,13 @@ def vendor_home(request):
 def View_user(request):
     if not request.user.is_authenticated:
         return redirect('login_admin')
-    pro = Profile.objects.all()
-    d = {'user':pro}
-    return render(request,'view_user.html',d)
+
+    # Fetch all user profiles
+    profiles = Profile.objects.all()
+    
+    # Pass the correct variable name to the template
+    return render(request, 'view_user.html', {'users': profiles})
+
 
 def view_vendors(request):
     if not request.user.is_authenticated:
@@ -260,46 +275,40 @@ def View_feedback(request):
     d = {'feed': feed}
     return render(request, 'view_feedback.html', d)
 
-
-
-def View_prodcut(request,pid):
+def View_product(request, pid):
     if not request.user.is_authenticated:
         return redirect('login_admin')
-    cat = ""
-    cat1 = ""
-    pro1 = ""
+
+    user = profile = cart = pro1 = cat1 = None
     num1 = 0
-    user=""
-    profile=""
-    cart=""
-    pro=""
-    num=""
+
+    # If user is not staff, get user cart
     if not request.user.is_staff:
         user = User.objects.get(id=request.user.id)
         profile = Profile.objects.get(user=user)
         cart = Cart.objects.filter(profile=profile)
-        for i in cart:
-            num1 += 1
+        num1 = cart.count()  # Count cart items
 
+    # Fetch products based on category
     if pid == 0:
         cat = "All Product"
         pro1 = Product.objects.all()
     else:
         cat1 = Category.objects.get(id=pid)
-        pro1 = Product.objects.filter(category=cat1).all()
-    cat = Category.objects.all()
-    pro = Product.objects.all()
-    num = []
-    b = 1
-    for j in cat:
-        a = 1
-        for i in pro:
-            if j.name == i.category.name:
-                if a == 1:
-                    num.append(i.id)
-                    a = 2
-    d = {'pro': pro, 'cat': cat,'cat1': cat1,'num':num,'pro1':pro1,'num1':num1}
-    return render(request, 'view_product.html',d)
+        pro1 = Product.objects.filter(category=cat1)
+
+    # Get all categories
+    categories = Category.objects.all()
+
+    context = {
+        'pro1': pro1,
+        'cat': categories,
+        'cat1': cat1,
+        'num1': num1
+    }
+    return render(request, 'view_product.html', context)
+
+
 
 
 def Add_Categary(request):
@@ -477,17 +486,21 @@ def remove_cart(request,pid):
     return redirect('cart')
 
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import date
-from .models import User, Profile, Cart, Booking, Status, Product
+from .models import Booking, BookingItem, Profile, Cart, Product, Status
+import uuid
+
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Booking, BookingItem, Profile, Cart, Product, Status
+from grocery.models import Booking, Cart, Profile, User, Status
 from datetime import date
 import uuid
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from .models import Profile, Cart, Booking, Status
 from datetime import date
-from .models import User, Profile, Cart, Booking, Status, Product
+import uuid
 
 def Booking_order(request, pid):
     print(f"Received pid: {pid}")  # ✅ Debugging line
@@ -495,19 +508,22 @@ def Booking_order(request, pid):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    # Fetch user and profile
+    # Fetch user and profile safely
     data1 = get_object_or_404(User, id=request.user.id)
-    data = Profile.objects.filter(user=data1).first()
-    
+    data = get_object_or_404(Profile, user=data1)  # ✅ Ensure Profile exists
+
+    # Debug output
+    print(f"Profile Data: {data}")
+    print(f"City: {data.city}, Contact: {data.contact}, Address: {data.address}")
+
     # Check if cart is empty
     cart = Cart.objects.filter(profile=data).all()
     if not cart.exists():
         return HttpResponse("Error: Your cart is empty!", status=400)  # 🛑 Prevent empty booking
-    
+
     # Calculate total price
     total = sum(i.product.price for i in cart)
     num1 = cart.count()
-    
     date1 = date.today()
 
     if request.method == "POST":
@@ -518,11 +534,11 @@ def Booking_order(request, pid):
         e = request.POST['email']
         con = request.POST['contact']
         t = request.POST['total']
-        
+
         user = get_object_or_404(User, username=c)
         profile = get_object_or_404(Profile, user=user)
         status = get_object_or_404(Status, name="pending")
-        
+
         # ✅ Generate a unique booking ID
         new_booking = Booking.objects.create(
             profile=profile,
@@ -535,8 +551,6 @@ def Booking_order(request, pid):
         # ✅ Add products to the booking
         for cart_item in cart:
             new_booking.products.add(cart_item.product)
-
-        # ✅ Clear cart after booking
         cart.delete()
 
         return redirect('payment', new_booking.total)
@@ -549,8 +563,11 @@ def Booking_order(request, pid):
         'total': total,
         'num1': num1
     }
-    
+
     return render(request, 'booking.html', context)
+
+
+
 
 def payment(request,total):
     if not request.user.is_authenticated:
@@ -597,33 +614,41 @@ def delete_feedback(request, pid):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Booking, Product, Cart, Profile
 from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Profile, Booking
 
 from django.shortcuts import render, get_object_or_404
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Booking
-
+@login_required
 def booking_detail(request, pid, bid):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    # ✅ Retrieve the correct booking
+    # ✅ Fetch the booking
     booking = get_object_or_404(Booking, booking_id=pid, id=bid)
 
-    # ✅ Fetch all products related to this booking
-    products = booking.products.all()  # ✅ Direct ManyToManyField access
+    # ✅ Debugging: Print status in terminal
+    print(f"Booking ID: {booking.booking_id}, Status: {booking.status}")
+
+    # ✅ Fetch all related products
+    products = booking.products.all()
+
+    # ✅ Ensure status is passed
+    order_status = booking.status.name if booking.status else "Pending"
 
     # ✅ Calculate total price
     total_price = sum(product.price for product in products)
 
     context = {
         'booking': booking,
-        'products': products,  # ✅ List of booked products
-        'total_price': total_price,  # ✅ Total price
+        'products': products,
+        'total_price': total_price,
+        'order_status': order_status,  # ✅ Ensure correct status is passed
     }
 
     return render(request, 'booking_detail.html', context)
-
 
 
 
@@ -649,7 +674,6 @@ def admin_booking_detail(request,pid,bid,uid):
         num1+=1
     d = {'profile':profile,'cart':cart,'total':total,'num1':num1,'book':li2,'product':product,'total':book}
     return render(request,'admin_view_booking_detail.html',d)
-
 
 def vendor_view_booking_detail(request,pid,bid,uid):
     if not request.user.is_authenticated:
@@ -712,21 +736,33 @@ def delete_product(request,pid):
     pro.delete()
     return redirect('admin_view_product')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from .models import Profile, Cart  # Ensure correct model imports
+
 def profile(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    profile = request.user.id
-    cart = Cart.objects.filter(profile=profile)
+
+    profile_id = request.user.id  # Changed variable name to avoid confusion
+    cart = Cart.objects.filter(profile=profile_id)
     
     num1 = 0
     total = 0
     for i in cart:
         total += i.product.price
         num1 += 1
+
     user = User.objects.get(id=request.user.id)
     pro = Profile.objects.get(user=user)
-    d={'pro':pro,'user':user,'num1':num1,'total':total}
-    return render(request,'profile.html',d)
+
+    # ✅ Handling missing profile image
+    if not pro.image:
+        pro.image = "images/default-profile.png"  # Set a default image path
+
+    context = {'pro': pro, 'user': user, 'num1': num1, 'total': total}
+    return render(request, 'profile.html', context)
+
 
 
 def Edit_profile(request):
@@ -915,24 +951,10 @@ def edit_category(request,pid):
     return render(request, 'edit_category.html', d)
 
 # payment 
-
 import razorpay
 from django.conf import settings
-from django.shortcuts import render
-
-import razorpay
-from django.conf import settings
-from django.shortcuts import render
-
-import razorpay
 from django.shortcuts import render, redirect
-from django.conf import settings
-from .models import Booking, Payment
-
-import razorpay
-from django.shortcuts import render
-from django.conf import settings
-
+from grocery.models import Booking
 
 def payment(request, total=None):
     if total is None:
@@ -940,20 +962,12 @@ def payment(request, total=None):
 
     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
-    profile = request.user.profile  # Ensure Profile model has OneToOne with User
-
-    # ✅ Generate a unique booking_id using UUID
-    unique_booking_id = str(uuid.uuid4())[:8]  # Generates an 8-character unique ID
-
-    # ✅ Create a new booking with the generated booking_id
-    booking = Booking.objects.create(
-        profile=profile,
-        total=total,
-        quantity=1,  # Set dynamically if needed
-        book_date="2025-02-21",  # Set actual date dynamically
-        status=None,  # Set default status
-        booking_id=unique_booking_id  # ✅ Store the unique booking_id
-    )
+    # ✅ Fetch the latest booking for this user
+    profile = request.user.profile
+    latest_booking = Booking.objects.filter(profile=profile).order_by('-book_date').first()
+    
+    if not latest_booking:
+        return render(request, "error.html", {"error": "No booking found."})
 
     data = {
         "amount": int(total) * 100,  # Razorpay requires amount in paise
@@ -970,7 +984,7 @@ def payment(request, total=None):
         "amount": total,
         "order_id": order["id"],
         "razorpay_key": settings.RAZORPAY_KEY_ID,
-        "booking_id": booking.booking_id  # ✅ Pass generated booking_id to the template
+         "booking_id": latest_booking.booking_id  # ✅ Pass existing booking_id
     })
 
 
@@ -1091,22 +1105,55 @@ def booking_history(request):
     bookings = Booking.objects.filter(profile=request.user.profile, status__status="Completed")  # Show completed bookings
     return render(request, 'booking_history.html', {'bookings': bookings})
 
-@login_required
-def add_review(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, profile=request.user.profile)
-    product = booking.status.product  # Assuming status links to a product
+
+# reviews 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Booking, Product, Review
+
+def add_review(request, booking_id, product_id):
+    booking = Booking.objects.get(booking_id=booking_id)  # Get Booking
+    product = Product.objects.get(id=product_id)  # Get Product
+
+    if request.method == "POST":
+        comment = request.POST.get("comment")  # Match "comment" field
+        rating = request.POST.get("rating")
+
+        # ✅ Ensure Review object is created with correct field names
+        review = Review.objects.create(
+            product=product,
+            user=request.user,  # Assuming user is logged in
+            comment=comment,  # Use "comment" instead of "review_text"
+            rating=int(rating)  # Convert rating to integer
+        )
+        review.save()
+
+        return redirect("view_booking")  # Redirect after review submission
+
+    return render(request, "add_review.html", {"booking": booking, "product": product})
+
+
+# product details
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Product, Review
+from .forms import ReviewForm
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    reviews = Review.objects.filter(product=product)
 
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.profile = request.user.profile
-            review.product = product  # Ensure review is for the booked product
-            review.booking = booking
+            review.product = product
+            review.user = request.user
             review.save()
-            return redirect('booking_history')  # Redirect to history page
-
+            return redirect('product_detail', product_id=product.id)
     else:
         form = ReviewForm()
 
-    return render(request, 'add_review.html', {'form': form, 'product': product})
+    return render(request, "product_detail.html", {
+        "product": product,
+        "reviews": reviews,
+        "form": form
+    })

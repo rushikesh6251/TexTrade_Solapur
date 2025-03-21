@@ -1,132 +1,151 @@
 {% extends 'carousel.html' %}
 {% block b %}
 {% load static %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<!-- Bootstrap & Custom CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <style>
-.mybtnone:hover{background-color : #E40203}
+/* General Styling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Section Title */
+.category-title {
+    color: #E40203;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+/* Product Card Styling */
+.card {
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    padding: 10px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+/* Add to Cart Button */
+.mybtnone {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.mybtnone:hover {
+    background-color: #E40203;
+}
+
+/* Scroll to Top Button */
+#scrollbtn {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    z-index: 99;
+    border: none;
+    color: white;
+    background: #007bff;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+#scrollbtn:hover {
+    background: #E40203;
+}
 </style>
 
-<hr>
+<!-- Display Products -->
 {% for i in cat %}
- <div class="container-fluid">
-   	<h1 class="text-center mt-5 mb-5">
-   	</h1>
-	 <h2 class= "pl-5" style = "color : #E40203 ; text-transform : uppercase">{{i.name}}</h2><hr>
-   	<div id="{{i.id}}" class="carousel slide" data-ride="carousel">
-   		<div class="carousel-inner row w-100 mx-auto">
-			{% for j in pro %}
-			{% if i.name == j.category.name %}
-			{% if forloop.counter in num %}
-				<div class="carousel-item col-md-3 active"><div class="card">
-					<center><img class="card-img-top img-fluid" align="center" src="{{j.image.url}}" style="width:160px;height:170px;float:center" alt="card-img"></center>
-   						<div class="card-body">
-   						<h4 class="card-title">{{j.name}} Rs.{{j.price}}</h4>
-   						<p class="card-text">{{j.desc}}</p>
-							<form align="center" action="{% url 'add_cart' j.id %}" method="post">
-								{% csrf_token %}
-							<button type="submit" class="btn btn-primary mybtnone">Add to Cart</button>
-</form>
-   					</div>
-   				</div>
-   			</div>
+<div class="container-fluid">
+    <h2 class="category-title mt-5">{{ i.name }}</h2>
+    <hr>
 
+    <div id="carousel{{ i.id }}" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner row w-100 mx-auto">
+            {% for j in pro %}
+            {% if i.name == j.category.name %}
+            <div class="carousel-item col-md-3 {% if forloop.counter == 1 %} active {% endif %}">
+                <div class="card">
+                    <center>
+                        <img class="card-img-top" src="{{ j.image.url }}" alt="{{ j.name }}">
+                    </center>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ j.name }} - ₹{{ j.price }}</h4>
+                        <p class="card-text">{{ j.desc }}</p>
+                        <form action="{% url 'add_cart' j.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn mybtnone">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
 
-				{% else %}
-				<div class="carousel-item col-md-3">
-   				<div class="card">
-					<center><img class="card-img-top img-fluid" align="center" src="{{j.image.url}}" style="width:160px;height:170px;float:center" alt="card-img"></center>
-   						<div class="card-body">
-   						<h4 class="card-title">{{j.name}} Rs.{{j.price}}</h4>
-   						<p class="card-text">{{j.desc}}</p>
-<form align="center" action="{% url 'add_cart' j.id %}" method="post">
-	{% csrf_token %}
-							<button type="submit" class="btn btn-primary mybtnone">Add to Cart</button>
-</form>   					</div>
-   				</div>
-   			</div>
-
-			{% endif %}
-	 		{% endif %}
-			{% endfor %}
-			<a class="carousel-control-prev" href="#{{i.id}}" role="button" data-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
-			</a>
-  			    <a class="carousel-control-next" href="#{{i.id}}" role="button" data-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="sr-only">Next</span></a>
-		</div>
-	</div>
- </div>
- 
-  
+        <!-- Carousel Controls -->
+        <a class="carousel-control-prev" href="#carousel{{ i.id }}" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel{{ i.id }}" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
 {% endfor %}
 
-<style>
-html{
-scroll-behavior:smooth;
-}
+<!-- Scroll to Top Button -->
+<button id="scrollbtn" onclick="topFunction()">
+    <i class="fa fa-arrow-up"></i>
+</button>
 
-
-/*scroll button start*/
-#scrollbtn
-{
-
-position:fixed;
-bottom:20px;
-right:40px;
-z-index:99;
-border:none;
-color:red;
-background:#00abff;
-padding:10px;
-border-radius:10px;
-}
-/*scroll button end*/
-</style>
-
- <div class="scrolltop float-right">
-  <i class="fa fa-arrow-up" onclick="topFunction()" id="scrollbtn"></i>
-  </div>
-
+<!-- JavaScript -->
 <script>
-  scrollbutton = document.getElementById("scrollbtn"); 
-  window.onscroll = function(){scrollFunction()};
-  
-  function scrollFunction()
-  {
-  if(document.body.scrollTop>20 || document.documentElement.scrollTop>20)
-  {
-  scrollbutton.style.display="block";
-  }
-  else
-  {
-  scrollbutton.style.display="none";
-  }
-  }
-  
-  function topFunction()
-  {
-  document.body.scrollTop = 0;//safari
-  document.documentElement.scrollTop = 0;//for chrome
+  // Scroll Button Visibility
+  window.onscroll = function() { scrollFunction(); };
+
+  function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          document.getElementById("scrollbtn").style.display = "block";
+      } else {
+          document.getElementById("scrollbtn").style.display = "none";
+      }
   }
 
-</script>  
-  
-  
-  
-  
+  // Scroll to Top Function
+  function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+  }
+</script>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="{% static 'js/jquery.js' %}"></script>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
- <script src="{% static 'js/jquery.js' %}"></script>
+<!-- External Scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 {% endblock %}

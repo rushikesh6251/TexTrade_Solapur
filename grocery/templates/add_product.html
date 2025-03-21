@@ -1,42 +1,55 @@
 {% extends 'navigation.html' %}
 {% block body %}
 {% load static %}
-<div class="container">
-    <h2 style="margin-top:20px" align="center">Add Product</h2><hr>
 
-<div class="container-fluid" style="width:70%;margin-top:10%">
-<form method="post" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputEmail4">Product Name</label>
-      <input type="text" class="form-control" placeholder="Enter Product Name" name="pname" id="inputEmail4">
-    </div>
-    <div class="form-group col-md-6">
-    <label for="exampleInputPassword1">Product Image</label>
-    <input type="file" class="form-control" id="exampleInputPassword1" name="img" value="choose file">
-</div></div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-      <label for="inputState">Category</label>
-      <select id="inputState" class="form-control" name="cat">
-          {% for i in cat %}
-        <option value="{{i.name}}">{{i.name}}</option>
-          {% endfor %}
-      </select>
-    </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Add New Product</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-    <div class="form-group col-md-6">
-      <label for="inputEmail4">Product Price</label>
-      <input type="number" class="form-control" name="price" placeholder="Enter Price" id="inputEmail4">
-    </div></div>
-    <div class="form-group">
-    <label for="exampleFormControlTextarea1">Description</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" name="desc" rows="3"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-</div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="productName" class="font-weight-bold">Product Name</label>
+                                <input type="text" class="form-control" id="productName" name="pname" placeholder="Enter Product Name" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="productImage" class="font-weight-bold">Product Image</label>
+                                <input type="file" class="form-control-file" id="productImage" name="img" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="category" class="font-weight-bold">Category</label>
+                                <select id="category" class="form-control" name="cat" required>
+                                    {% for i in cat %}
+                                        <option value="{{ i.name }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="productPrice" class="font-weight-bold">Product Price</label>
+                                <input type="number" class="form-control" id="productPrice" name="price" placeholder="Enter Price" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="font-weight-bold">Description</label>
+                            <textarea class="form-control" id="description" name="desc" rows="3" placeholder="Enter product description" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">Add Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% if error %}
@@ -44,4 +57,30 @@
     alert('1 Product Added Successfully');
 </script>
 {% endif %}
+
+<style>
+    .card {
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .form-control:focus, .form-control-file:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+    }
+</style>
+
 {% endblock %}

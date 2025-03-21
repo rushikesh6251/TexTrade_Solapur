@@ -2,64 +2,56 @@
 {% block body %}
 
 <center><h2 style="color:red;margin-top:2%">View Booking</h2></center><hr>
-<div class="container" style="margin-top:5%">
+
+<div class="container" style="margin-top:5%"></div>
+
+<div class="container">
+    <table class="table table-bordered" id="myTable">
+        <thead>
+            <tr>
+                <th>Sr. No</th>
+                <th>Booking ID</th>
+                <th>Booking Date</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>View Product</th>
+                <th>Cancel Booking</th>
+                <th>Add Review</th> <!-- Review button column -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in book %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.booking_id }}</td>
+                <td>{{ i.book_date }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.total }}</td>
+                <td>{{ i.status.name }}</td>
+                <td>
+                    <a href="{% url 'booking_detail' i.booking_id i.id %}">
+                        <button class="button button1">Detail</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete_booking' i.booking_id i.id %}" onclick="return confirm('Are you sure?')">
+                        <button class="button button1">Cancel</button>
+                    </a>
+                </td>
+                <td>
+                    {% for product in i.products.all %}
+                        <a href="{% url 'add_review' i.booking_id product.id %}">
+                            <button class="btn btn-primary btn-sm">Add Review</button>
+                        </a>
+                    {% endfor %}
+                </td>
+                
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
- <div class="container">
-<table class="table table-bordered" id="myTable">
-  <thead>
-  <tr>
-    <th>Sr. No</th>
-    <th>Booking ID</th>
-    <th>Booking Date</th>
-    <th>Quantity</th>
-    <th>Total</th>
-    <th>Status</th>
-    <th>View Product</th>
-    <th>Cancel Booking</th>
-    <th>Review</th> <!-- Added Review Column -->
-  </tr>
-  </thead>
-   <tbody>
 
-{% for i in book %}
-
-  <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ i.booking_id }}</td>
-      <td>{{ i.book_date }}</td>
-      <td>{{ i.quantity }}</td>
-      <td>{{ i.total }}</td>
-      <td>{{ i.status.name }}</td>
-      <a href="{% url 'booking_detail' i.booking_id i.id %}">
-        <button class="button button1">Detail</button>
-    </a>
-    
-      <td><a href="{% url 'booking_detail' i.booking_id i.id %}"><button class="button button1">detail</button></a></td>
-      <td><a href="{% url 'delete_booking' i.booking_id i.id %}" onclick="return confirm('Are you sure?')">
-          <button class="button button1" id="#delete">cancel</button></a></td>
-      
-      <!-- Show "Review" button only for completed bookings and if no review exists -->
-      <td>
-          {% if i.status.name == "Completed" and not i.reviews.exists %}
-              <a href="{% url 'add_review' i.id %}">
-                  <button class="button button1">Review</button>
-              </a>
-          {% else %}
-              <span style="color: gray;">Reviewed</span>
-          {% endif %}
-      </td>
-  </tr>
-   {% endfor %}
-
-    </tbody>
-</table>
-
- </div>
-
-<script>
-            var el_up = document.getElementById("GFG_UP");
-
-            el_up.innerHTML =
-                "Click on the LINK for further confirmation.";
-</script>
 {% endblock %}
