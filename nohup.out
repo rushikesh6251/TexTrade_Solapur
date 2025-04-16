@@ -1,0 +1,84 @@
+/home/ubuntu/myenv/lib/python3.12/site-packages/django/db/models/base.py:366: RuntimeWarning: Model 'grocery.review' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+/home/ubuntu/myenv/lib/python3.12/site-packages/django/db/models/base.py:366: RuntimeWarning: Model 'grocery.review' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (2_0.W001) Your URL pattern 'Edit_status/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='Edit_status'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'add_cart(?P<int:pid>)' [name='add_cart'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'booking(?P<str:pid>)' [name='booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='booking_detail'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_admin_booking/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='delete_admin_booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_booking/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='delete_booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_category(?P<int:pid>)' [name='delete_category'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_feedback(?P<int:pid>)' [name='delete_feedback'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_product(?P<int:pid>)' [name='delete_product'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_user(?P<int:pid>)' [name='delete_user'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'payment(?P<total>[0-9]+)' [name='payment'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'remove_cart(?P<int:pid>)' [name='remove_cart'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'send_feedback/(?P<pid>[0-9]+)' [name='send_feedback'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'vendor_view_booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)/(?P<uid>[0-9]+)' [name='vendor_view_booking_detail'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'view_product(?P<int:pid>)' [name='view_product'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+grocery.Booking: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.BookingItem: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Cart: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Category: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Payment: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Review: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Send_Feedback: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Status: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+
+System check identified 23 issues (0 silenced).
+Error: That port is already in use.
+/home/ubuntu/myenv/lib/python3.12/site-packages/django/db/models/base.py:366: RuntimeWarning: Model 'grocery.review' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+/home/ubuntu/myenv/lib/python3.12/site-packages/django/db/models/base.py:366: RuntimeWarning: Model 'grocery.review' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+  new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (2_0.W001) Your URL pattern 'Edit_status/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='Edit_status'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'add_cart(?P<int:pid>)' [name='add_cart'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'booking(?P<str:pid>)' [name='booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='booking_detail'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_admin_booking/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='delete_admin_booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_booking/(?P<str:pid>)/(?P<bid>[0-9]+)' [name='delete_booking'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_category(?P<int:pid>)' [name='delete_category'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_feedback(?P<int:pid>)' [name='delete_feedback'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_product(?P<int:pid>)' [name='delete_product'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'delete_user(?P<int:pid>)' [name='delete_user'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'payment(?P<total>[0-9]+)' [name='payment'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'remove_cart(?P<int:pid>)' [name='remove_cart'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'send_feedback/(?P<pid>[0-9]+)' [name='send_feedback'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'vendor_view_booking_detail/(?P<str:pid>)/(?P<bid>[0-9]+)/(?P<uid>[0-9]+)' [name='vendor_view_booking_detail'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+?: (2_0.W001) Your URL pattern 'view_product(?P<int:pid>)' [name='view_product'] has a route that contains '(?P<', begins with a '^', or ends with a '$'. This was likely an oversight when migrating to django.urls.path().
+grocery.Booking: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.BookingItem: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Cart: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Category: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Payment: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Review: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Send_Feedback: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+grocery.Status: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the GroceryConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+
+System check identified 23 issues (0 silenced).
+Error: That port is already in use.
