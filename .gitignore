@@ -8,12 +8,12 @@ __pycache__/
 *.pyc
 
 # Django stuff
-db.sqlite3
+
 *.log
 
 # Environment variables
 .env
 __pycache__/
 *.pyc
-db.sqlite3
+
 media/
