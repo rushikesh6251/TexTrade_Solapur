@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Online_Grocery_Shop.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'texTrade.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -1,15 +1,19 @@
-# Virtual environment
+# Python virtual environment
+myenv/
 venv/
+env/
+
+# Python cache
 __pycache__/
 *.pyc
 
-# Log and database files
-*.log
+# Django stuff
 db.sqlite3
-
-# IDE and editor settings
-*.vscode
-.idea/
+*.log
 
 # Environment variables
 .env
+__pycache__/
+*.pyc
+db.sqlite3
+media/
